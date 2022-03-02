@@ -83,25 +83,46 @@ def deck_not_empty(deck):
 def game(deck):
     p1 = Player(input("Give P1 a name: "))
     p2 = Player(input("Give P2 a name: "))
-    turn = 1        #since p1 gets the first card
+    turn = 1  # since p1 gets the first card
     for i in range(5):
         p1.hand.append(draw_card(deck))
         p2.hand.append(draw_card(deck))
 
     trump_value, trump_color = determine_trump(deck)
     trump = deck.pop()
-    deck.insert(0, trump)   #adding the trump card to the bottom of the stack since it is the last card and openly
-                            #seen to all players
+    deck.insert(0, trump)  # adding the trump card to the bottom of the stack since it is the last card and openly
+    # seen to all players
 
     while deck_not_empty(deck):
-        print(p1.hand)
-        print(p2.hand)
+        print("Hand von: " + p1.name)
+        for i in range(len(p1.hand)):
+            print(str(p1.hand[i].value) + " , " + p1.hand[i].color)
+        print("Hand von: " + p2.name)
+        for i in range(len(p2.hand)):
+            print(str(p2.hand[i].value) + " , " + p2.hand[i].color)
+        regis = 0
+        if turn:
+            regis = int(input(p1.name + " wenn du melden kannst und willst gib 1 ein, falls nicht 0: "))
+        else:
+            regis = int(input(p2.name + " wenn du melden kannst und willst gib 1 ein, falls nicht 0: "))
+
+        if regis != 0:
+            if turn:
+                pair = []
+                for i in range(len(p1.hand)):
+                    p1_card_v = p1.hand[i].value
+                    if p1_card_v == 4 or p1_card_v == 3:
+                        pair.append(p1.hand[i])
+
         card_played_p1 = int(input(p1.name + " Welche karte willst du spielen bitte index startend von 0: "))
         card_played_p2 = int(input(p2.name + " Welche karte willst du spielen bitte index startend von 0: "))
 
-        p1.count, p2.count, turn = stab(p1.hand[card_played_p1], p2.hand[card_played_p2], trump_color, turn)
+        p1_count, p2_count, turn = stab(p1.hand[card_played_p1], p2.hand[card_played_p2], trump_color, turn)
         p1.hand.pop(card_played_p1)
         p2.hand.pop(card_played_p2)
+
+        p1.count += p1_count
+        p2.count += p2.count
 
         if turn:
             p1.hand.append(draw_card(deck))
@@ -110,11 +131,7 @@ def game(deck):
             p2.hand.append(draw_card(deck))
             p1.hand.append(draw_card(deck))
 
-
-    print(trump_color)
-    print(trump_value)
-
-
+        turn = int(input("Wer ist dran? "))
 
 
 deck_66 = build_Deck()
