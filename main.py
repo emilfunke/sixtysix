@@ -25,7 +25,7 @@ def build_Deck():
     deck = []
     # card of the form (color, value)
     color = ["Eichel", "Grün", "Herz", "Schell"]
-    value = [7, 8, 9, 10, "2", "3", "4", 11]
+    value = [7, 8, 9, 10, 2, 3, 4, 11]
 
     for c in color:
         for v in value:
@@ -38,12 +38,20 @@ def build_Deck():
 def draw_card(deck):
     return deck.pop()
 
-
+"""
+returns the trump card value and color in that order
+"""
 def determine_trump(deck):
     trump_card = deck.pop()
     return trump_card.value, trump_card.color
 
-def stab(card_p1, card_p2, trump_color):
+"""
+return counts for p1 and p2 after one stab played
+input card of p1 & p2 as well as trump color and which player has to play first
+first = 1 --> p1 plays
+first = -1 --> p2 plays
+"""
+def stab(card_p1, card_p2, trump_color, first):
     count_p1 = 0
     count_p2 = 0
 
@@ -53,14 +61,6 @@ def stab(card_p1, card_p2, trump_color):
     c_p2 = card_p2.color
 
 
-    if (c_p2 != trump_color & c_p1 != trump_color):
-        if v_p1 > v_p2:
-            return v_p1+v_p2, 0
-        elif v_p2 > v_p1:
-            return 0, v_p1+v_p2
-
-
-    return count_p1, count_p2
 
 def game(deck):
     p1 = Player(input("Give P1 a name: "))
@@ -70,16 +70,16 @@ def game(deck):
         p1.hand.append(draw_card(deck_66))
         p2.hand.append(draw_card(deck_66))
 
-    trump_color, trump_card = determine_trump(deck_66)
+    trump_value, trump_color = determine_trump(deck_66)
 
     print(p1.hand)
     print(p2.hand)
 
 
     print(trump_color)
-    print(trump_card)
+    print(trump_value)
 
-    stab(p1.hand.pop(), p2.hand.pop(), trump_color)
+    stab(p1.hand.pop(), p2.hand.pop(), trump_color, 1)
 
 
 deck_66 = build_Deck()
