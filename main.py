@@ -94,10 +94,14 @@ def game(deck):
                             #seen to all players
 
     while deck_not_empty(deck):
-        card_played_p1 = input("Welche karte willst du spielen bitte index startend von 0: ")
-        card_played_p2 = input("Welche karte willst du spielen bitte index startend von 0: ")
+        print(p1.hand)
+        print(p2.hand)
+        card_played_p1 = int(input(p1.name + " Welche karte willst du spielen bitte index startend von 0: "))
+        card_played_p2 = int(input(p2.name + " Welche karte willst du spielen bitte index startend von 0: "))
 
         p1.count, p2.count, turn = stab(p1.hand[card_played_p1], p2.hand[card_played_p2], trump_color, turn)
+        p1.hand.pop(card_played_p1)
+        p2.hand.pop(card_played_p2)
 
         if turn:
             p1.hand.append(draw_card(deck))
